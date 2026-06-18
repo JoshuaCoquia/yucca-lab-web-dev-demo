@@ -1,6 +1,6 @@
 # v1-basic
 
-This is a basic website project created with just HTML, CSS, and JavaScript. You can open it by opening the [HTML file] in your browser; the CSS and JavaScript will load automatically.
+This is a basic website project created with just HTML, CSS, and JavaScript. You can open it by opening the [HTML file](./index.html) in your browser; the CSS and JavaScript will load automatically.
 
 ## Documentation Links
 
