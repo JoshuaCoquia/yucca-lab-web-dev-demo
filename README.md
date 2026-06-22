@@ -11,30 +11,48 @@
 
 ## Setup
 
-How to set up each project within this repo:
+To start, download this git repo onto your device, then `cd` into it.
+```
+git clone https://github.com/JoshuaCoquia/yucca-lab-web-dev-demo.git
+cd yucca-lab-web-dev-demo
+```
+
+Directions for then setting up each individual project within this repo are below.
 
 ### v1-basic
 
-No setup required; view the [HTML FILE](./v1-basic/index.html) directly in your web browser.
+No setup required; view the [HTML file](./v1-basic/index.html) within this project directly in your web browser.
+
 
 ### v2-react
 
-1. Install the [prerequisites](#prerequisites) listed above.
-2. Move into the `v2-react` directory:
-```cd ./v2-react/```
-3. Install project dependencies using `pnpm`:
-```pnpm install```
-4. Run the dev server:
-```pnpm dev```
-5. Go to the URL listed by the dev server. Defaults to https://localhost:5173
+1. Move into the `v2-react` directory:
+```
+cd v2-react
+```
+2. Install project dependencies using `pnpm`:
+```
+pnpm install
+```
+3. Run the dev server:
+```
+pnpm dev
+```
+4. Go to the URL listed by the dev server. Defaults to https://localhost:5173
+
 
 ### v3-nextjs
 
-1. Install the [prerequisites](#prerequisites) listed above.
-2. Move into the `v3-nextjs` directory:
-```cd ./v3-nextjs/```
-3. Install project dependencies using `pnpm`:
-```pnpm install```
-4. Run the dev server to view the website:
-```pnpm dev```
-5. Go to the URL listed by the dev server. Defaults to https://localhost:3000
+1. Move into the `v3-nextjs` directory:
+```
+cd v3-nextjs
+```
+2. Install project dependencies using `pnpm`:
+```
+pnpm install
+```
+3. Run the dev server to view the website:
+```
+pnpm dev
+```
+4. Go to the URL listed by the dev server. Defaults to https://localhost:3000
