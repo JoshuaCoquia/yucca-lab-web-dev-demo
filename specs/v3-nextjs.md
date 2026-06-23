@@ -29,6 +29,10 @@ browser). Render post bodies to HTML with **`marked`** on the server.
    content is server-rendered. Keep search/sort optional; if included, they can be client components
    over the server-fetched list.
 4. Navigation uses `next/link`.
+5. **Styling (intentional):** build the UI from a real component library — **shadcn/ui** (preferred;
+   Tailwind + Radix primitives) or **MUI** — so v3 looks like a polished, library-assembled modern
+   app. This is the deliberate visual contrast with v1's hand-written CSS and v2's hand-styled
+   components; it is part of the demo's "how we style things now" story, not just decoration.
 
 ## Constraints
 

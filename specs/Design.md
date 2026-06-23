@@ -20,7 +20,8 @@ technology had to exist; the demo shows *what* it looks like.
 ## Goals
 
 - Demonstrate three distinct rendering/architecture paradigms with the *same* content so the only
-  variable is the technology.
+  variable in the *architecture* comparison is the technology. (Visual styling deliberately differs
+  per version — see **Visual Design** — but the measurable beats don't depend on looks.)
 - Keep every version runnable by a peer who clones the repo cold.
 - Make three contrasts visible and demoable (the "three beats"):
   1. **No tooling → tooling.** v1 opens in a browser; v2 needs `pnpm install` and a build step.
@@ -47,6 +48,27 @@ Eight markdown posts live in `/content` (frontmatter: `title`, `date`, `tags`, `
 Dates span 2024–2026 and tags span `frontend` / `backend` / `tooling` / `career` specifically so
 that **sort** visibly reorders and **search/filter** has something to act on. All three versions
 consume this same content; only the *consumption mechanism* differs.
+
+## Visual Design
+
+The **content and feature set are identical** across all three versions — that is the controlled
+variable that keeps the rendering/architecture comparison honest. **Visual styling deliberately is
+not.** Each version is styled the way something built on that stack, in that era, actually would be,
+so the aesthetic becomes a quiet secondary narrative about how front-end styling itself evolved:
+
+- **v1-basic** — hand-written CSS in the style of a site built *before* utility frameworks were
+  everywhere. System fonts, a hand-rolled grid, a slightly dated but legible look. No framework, no
+  build — the CSS is authored by hand the way it would have been then.
+- **v2-react** — styled with **Tailwind CSS** (utility-first), the dominant styling approach for
+  modern React apps. Utilities, but no component library yet.
+- **v3-nextjs** — assembled from a real UI component library (**shadcn/ui** preferred, or **MUI**),
+  i.e. how a polished product app is built today. shadcn builds on the same Tailwind v2 introduced —
+  now with prebuilt, accessible components on top.
+
+This divergence does **not** confound the primary comparison: the measurable beats (manual DOM
+wiring vs component state; empty root vs server-rendered HTML) are about behavior and markup, not
+appearance. If anything the visual jump *reinforces* the progression — each version looks like its
+own moment in time.
 
 ## Per-Version Design
 
