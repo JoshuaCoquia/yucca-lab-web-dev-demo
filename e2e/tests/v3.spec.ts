@@ -45,7 +45,7 @@ test.describe('v3-nextjs', () => {
     }
   });
 
-  test.skip('navigates to a statically generated post and back', async ({ page }) => {
+  test('navigates to a statically generated post and back', async ({ page }) => {
     const target = posts[0];
     await page.goto('/');
     await cardByTitle(page, target.title).getByTestId('read-link').click();
@@ -56,14 +56,14 @@ test.describe('v3-nextjs', () => {
     await expect(page.getByTestId('post-card').first()).toBeVisible();
   });
 
-  test.skip('post raw HTML contains the server-rendered article (SSR/SSG)', async ({ request }) => {
+  test('post raw HTML contains the server-rendered article (SSR/SSG)', async ({ request }) => {
     const target = posts[0];
     const html = await (await request.get(`/posts/${target.slug}`)).text();
     expect(norm(html)).toContain(norm(target.title));
     expect(norm(html)).toContain(norm(bodySnippet(target.body)));
   });
 
-  test.skip('each post page has a real per-post <title> (metadata)', async ({ request }) => {
+  test('each post page has a real per-post <title> (metadata)', async ({ request }) => {
     const target = posts[0];
     const html = await (await request.get(`/posts/${target.slug}`)).text();
     const head = html.match(/<title>([\s\S]*?)<\/title>/i)?.[1] ?? '';
