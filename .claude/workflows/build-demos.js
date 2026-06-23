@@ -3,7 +3,6 @@ export const meta = {
   description: 'Build all three blog demos to passing e2e tests, auto-merging feature PRs as CI goes green',
   whenToUse: 'Overnight autonomous build of v1-basic, v2-react, and v3-nextjs per specs/automation.md',
   phases: [
-    { title: 'Gate', detail: 'e2e harness + CI workflows', model: 'sonnet' },
     { title: 'v1-basic', model: 'sonnet' },
     { title: 'v2-react', model: 'sonnet' },
     { title: 'v3-nextjs', model: 'sonnet' },
@@ -53,27 +52,10 @@ async function buildProject(project, features) {
   return { project, results }
 }
 
-log('Starting overnight build of all three demos. Gate first, then v1/v2/v3 concurrently.')
+log('Starting overnight build. The e2e gate + CI are already in the repo; building v1/v2/v3 concurrently.')
 
-// ── Gate phase: build the e2e harness + CI that everything else is gated by ──
-phase('Gate')
-const gate = await agent(
-  [
-    'Set up the end-to-end test GATE for all three demos, exactly as specified in specs/automation.md (sections "Test contract", "Incremental gating (skip strategy)", "E2E harness layout", and "CI + auto-merge"). Read that file carefully first.',
-    '',
-    'Create the root `e2e/` Playwright package:',
-    '- `e2e/package.json` (Playwright only), `e2e/playwright.config.ts` with three Playwright projects (v1/v2/v3) on ports 4011/4012/4013, each with its own `baseURL` and a `webServer` that builds + boots that app (v1: a static file server over ../v1-basic; v2: `pnpm -C ../v2-react build` then `preview --port 4012`; v3: prisma migrate + `pnpm -C ../v3-nextjs build` then `start -p 4013`).',
-    '- `e2e/fixtures/posts.ts` deriving expected titles/slugs/dates from ../content.',
-    '- `e2e/tests/v1.spec.ts`, `v2.spec.ts`, `v3.spec.ts` covering EVERY beat in the contract (render, search, sort, like, persistence — including v3 second-context shared-count — navigation, view-source raw-HTML assertions, v3 metadata).',
-    '',
-    'CRITICAL: mark EVERY beat `test.skip` initially (the apps do not exist yet). Builders un-skip beats as they deliver them.',
-    '',
-    'Create three path-filtered GitHub Actions workflows `.github/workflows/ci-v1.yml`, `ci-v2.yml`, `ci-v3.yml`: each triggers on PRs touching its project folder or `e2e/`, installs (project + e2e), runs `playwright install --with-deps chromium`, builds the app, and runs ONLY that project\'s spec. Give each a stable check/job name. Add a per-branch concurrency group.',
-    '',
-    'Verify `pnpm -C e2e install` and `pnpm -C e2e exec playwright test --list` succeed. Then commit DIRECTLY to `main` (this is shared infra, not a gated feature) and push. Return a one-line status.',
-  ].join('\n'),
-  { phase: 'Gate', model: 'sonnet', isolation: 'worktree' }
-)
+// The gate (e2e/ harness + .github/workflows/ci-v{1,2,3}.yml) is pre-built and on `main`.
+// Each builder implements to it and un-skips the beats it delivers — it does NOT touch the gate.
 
 // ── Build phases: three projects concurrently, features sequential within each ──
 const built = await parallel([
@@ -111,4 +93,4 @@ const verdict = await agent(
   { phase: 'Verify', model: 'sonnet' }
 )
 
-return { gate, built, verdict }
+return { built, verdict }

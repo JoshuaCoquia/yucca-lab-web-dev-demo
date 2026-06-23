@@ -50,9 +50,9 @@ implement **to these selectors and routes** so the tests pass.
 
 Index / header / controls:
 - `global-total` — header element showing the global like total (a number).
-- `search-input` — the search text input.
+- `search-input` — the search text input. **Required in v1 + v2** (gated). Optional in v3.
 - `sort-select` — the sort `<select>`. Option **values** must be exactly `newest`, `oldest`,
-  `title`.
+  `title`. **Required in v1 + v2** (gated). Optional in v3.
 - `post-card` — one per post (exactly 8 on the index).
   - inside each card: `post-title`, `post-date`, `post-tags`, `post-excerpt`,
     `like-button`, `like-count` (a number), `read-link` (anchor to the post).
@@ -63,9 +63,9 @@ Post page:
 ### Behaviors asserted (per beat)
 
 1. **Render** — index shows exactly 8 `post-card`s; each has non-empty title/excerpt and ≥1 tag.
-2. **Search** — typing a substring unique to one title into `search-input` leaves exactly the
-   matching card(s) visible.
-3. **Sort** — selecting `oldest` orders cards by ascending date; `newest` descending; `title`
+2. **Search** *(v1 + v2 only)* — typing a substring unique to one title into `search-input` leaves
+   exactly the matching card(s) visible.
+3. **Sort** *(v1 + v2 only)* — selecting `oldest` orders cards by ascending date; `title`
    alphabetical by title. (Assert the order of visible `post-title`s.)
 4. **Like** — clicking the first card's `like-button` increments that card's `like-count` by 1 **and**
    `global-total` by 1.
@@ -102,9 +102,12 @@ relevant app on its port. CI runs only the spec for the changed project (see CI 
 
 ## CI + auto-merge
 
+> **The gate is already built and committed** (`e2e/` + `.github/workflows/`), verified to install and
+> list all 20 beats. Builders do **not** create it — they only un-skip beats and implement to it.
+
 - One workflow per project under `.github/workflows/`: `ci-v1.yml`, `ci-v2.yml`, `ci-v3.yml`.
-- Each is **path-filtered** to its project folder (+ `e2e/`), so a builder's PR triggers only its own
-  CI — concurrent PRs don't cross-trigger.
+- Each is **path-filtered** to its project folder + that project's spec only (`e2e/tests/vN.spec.ts`),
+  so a builder's PR triggers only its own CI — concurrent PRs don't cross-trigger.
 - Steps: checkout → setup node + pnpm → install (project + `e2e/`) → `playwright install --with-deps
   chromium` → build the app → run that project's spec (Playwright boots the server via `webServer`).
 - **Merge gate (no repo settings required):** the builder opens a PR, runs `gh run watch` to wait for
@@ -116,8 +119,8 @@ relevant app on its port. CI runs only the spec for the changed project (see CI 
 
 ### Incremental gating (skip strategy)
 
-The full suite is written up front (Gate phase), but a feature PR can only pass the beats it has
-delivered. So **every beat starts as `test.skip`**, and **each feature PR un-skips exactly the
+The full suite is already written (the pre-built gate), but a feature PR can only pass the beats it
+has delivered. So **every beat starts as `test.skip`**, and **each feature PR un-skips exactly the
 beat(s) it implements**, keeping the rest skipped. CI green therefore means "all delivered beats
 pass". A project is **done** when its spec has no remaining skips.
 
@@ -164,20 +167,22 @@ These can't (or shouldn't) be done by the workflow:
 3. **`gh` auth** — already logged in with repo write (you've been merging), nothing to do.
 4. **Merge this setup PR to `main` first**, so the builders read the final specs *and* the workflow
    script from `main`.
-5. *(Optional)* branch protection on `main` requiring the three CI checks, if you want GitHub to
-   enforce the gate instead of relying on agent discipline. A required check can only be added after
-   it has run once, so do this only after the Gate phase has produced its first CI run.
+5. *(Optional)* branch protection on `main` requiring the three CI checks (`e2e-v1` / `e2e-v2` /
+   `e2e-v3`), if you want GitHub to enforce the gate instead of relying on agent discipline. A
+   required check can only be added after it has run once, so do this only after the first feature
+   PR's CI has run.
 
 ## Launch
 
-In a **new chat in this repo** (fresh context), opt into orchestration and run the saved script:
+The **gate is already built** (`e2e/` + `.github/workflows/`). In a **new chat in this repo** (fresh
+context), opt into orchestration and run the saved script:
 
 > Run the workflow at `.claude/workflows/build-demos.js`.
 
-It runs in the background as one job: a **Gate** phase builds the `e2e/` harness + CI workflows, then
-**v1 / v2 / v3 build concurrently**, each feature a PR that self-merges when its CI is green. Stop it
-anytime — merged work persists; an unfinished project just leaves open PRs to resume. In the morning,
-open PRs are the only manual work; everything merged is test-green.
+It runs in the background as one job: **v1 / v2 / v3 build concurrently**, each feature a PR that
+self-merges when its CI is green. Stop it anytime — merged work persists; an unfinished project just
+leaves open PRs to resume. In the morning, open PRs are the only manual work; everything merged is
+test-green.
 
 ## Risks (see Design.md too)
 
@@ -186,6 +191,6 @@ open PRs are the only manual work; everything merged is test-green.
 - **Stalls** (a beat that won't go green, a fix loop) burn tokens and CI minutes; each feature caps
   its retries (then leaves the PR open) to bound this.
 - **CI flakiness** (browser install, rate limits) is the likeliest "why is it stuck"; CI retries.
-- **The Gate is built by the workflow.** If you want the gate (tests + CI) built by hand first for
-  extra reliability — since everything trusts it — ask before launching and it can be pre-built.
+- **The gate is pre-built and verified** (installs + lists 20 beats). It's the one thing everything
+  trusts, so it was built by hand rather than by an agent. Builders only implement to it.
 - **Local SQLite** in v3 is demo-only; CI tests the shared-count behavior in-process, not a deploy.
