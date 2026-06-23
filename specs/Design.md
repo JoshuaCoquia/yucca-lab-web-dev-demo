@@ -26,8 +26,11 @@ technology had to exist; the demo shows *what* it looks like.
   1. **No tooling → tooling.** v1 opens in a browser; v2 needs `pnpm install` and a build step.
   2. **Manual DOM → component state.** A like counter that must keep a per-post count and a global
      total in sync — wired by hand in v1, automatic in v2.
-  3. **Client rendering → server rendering (SEO).** View-source on v2 shows an empty root element;
-     view-source on v3 shows real HTML. This is the SEO payoff and the reason meta-frameworks exist.
+  3. **Client rendering → server rendering (SEO).** This is a *round-trip*: view-source on v1
+     already shows real HTML (SEO was free in the no-tooling version); v2 *sacrifices* it for
+     interactivity (an empty root element); v3 *recovers* it with tooling (real HTML again). The
+     payoff is getting v1's indexable HTML back without giving up v2's component model — the reason
+     meta-frameworks exist.
 
 ## Non-Goals
 
@@ -50,8 +53,9 @@ consume this same content; only the *consumption mechanism* differs.
 ### v1-basic — vanilla, no build
 
 - `index.html` contains the post cards as **static HTML** (content is real in the markup — this is
-  itself the contrast with v2's empty root). Header shows a global like total. Controls: search
-  input + sort dropdown.
+  itself the contrast with v2's empty root, and the starting point of the SEO round-trip in beat 3:
+  the no-tooling version already ships indexable HTML). Header shows a global like total. Controls:
+  search input + sort dropdown.
 - `styles.css` styles the grid and cards.
 - `script.js` *enhances* existing DOM: search filters cards, sort reorders nodes, like buttons
   update a per-card count, the global total, and `localStorage`. The point: every update is wired by
