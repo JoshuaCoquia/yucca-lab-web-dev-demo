@@ -51,8 +51,12 @@ cd v3-nextjs
 ```
 pnpm install
 ```
-3. Run the dev server to view the website:
+3. Copy over the `.env.example` file into `.env`:
+```
+cp .env.example .env
+```
+4. Run the dev server to view the website:
 ```
 pnpm dev
 ```
-4. Go to the URL listed by the dev server. Defaults to https://localhost:3000
+5. Go to the URL listed by the dev server. Defaults to https://localhost:3000
