@@ -8,7 +8,7 @@ import { bodySnippet, cardByTitle, intOf, norm, visibleTitles } from './_shared'
 // Search/sort are optional for v3 (per v3-nextjs.md) and intentionally not gated.
 
 test.describe('v3-nextjs', () => {
-  test.skip('renders all 8 post cards', async ({ page }) => {
+  test('renders all 8 post cards', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByTestId('post-card')).toHaveCount(8);
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
