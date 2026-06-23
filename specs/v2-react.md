@@ -38,6 +38,10 @@ parser** (a short regex/split over the `---` block is fine). Render post bodies 
    - A `<Link>` back to the index.
 5. Componentize sensibly: a `PostCard`, a header/layout, an index page, a post page. Keep types
    simple (`string`, `number`, a `Post` interface).
+6. **Styling (intentional):** component-scoped styling written directly — plain CSS or CSS Modules,
+   the clean modern hand-styled look you get from just asking an assistant to style the components.
+   **Do not add a UI component library** (no MUI, no shadcn) — that look is reserved for v3 so the
+   three versions read as distinct styling eras.
 
 ## Constraints
 

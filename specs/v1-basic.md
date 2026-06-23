@@ -28,6 +28,10 @@ generate the HTML now; the page does not parse markdown at runtime).
 2. `v1-basic/styles.css`
    - Styles the header, controls, card grid, and cards. Clean and legible; responsive enough to not
      break on a projector. No frameworks.
+   - **Aesthetic (intentional):** make it look like a site built *before* utility frameworks were
+     everywhere — system fonts, a hand-rolled grid (floats/flexbox is fine, no CSS framework), a
+     slightly dated but tidy look. This is hand-written, of-its-era CSS on purpose; the dated feel is
+     part of the demo's story, not an accident.
 3. `v1-basic/scripts.js` — progressive enhancement over the existing DOM:
    - **Search**: filters visible cards by title as the user types.
    - **Sort**: reorders the card nodes in the DOM by the selected option.
