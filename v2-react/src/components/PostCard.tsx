@@ -4,7 +4,7 @@ import type { Post } from '../types'
 interface PostCardProps {
   post: Post
   likeCount: number
-  onLike: (slug: string) => void
+  onLike: () => void
 }
 
 export default function PostCard({ post, likeCount, onLike }: PostCardProps) {
@@ -25,7 +25,7 @@ export default function PostCard({ post, likeCount, onLike }: PostCardProps) {
       <div className="flex items-center gap-3 mt-2">
         <button
           data-testid="like-button"
-          onClick={() => onLike(post.slug)}
+          onClick={onLike}
           className="px-3 py-1 bg-pink-100 hover:bg-pink-200 rounded text-sm"
         >
           ♥

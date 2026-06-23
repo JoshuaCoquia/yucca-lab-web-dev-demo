@@ -27,7 +27,7 @@ test.describe('v2-react', () => {
     expect(await visibleTitles(page)).toEqual(byTitle.map((p) => p.title));
   });
 
-  test.skip('liking updates the card count and the global total (cannot desync)', async ({ page }) => {
+  test('liking updates the card count and the global total (cannot desync)', async ({ page }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[0].title);
     const count = card.getByTestId('like-count');
@@ -39,7 +39,7 @@ test.describe('v2-react', () => {
     await expect.poll(() => intOf(total)).toBe(t0 + 1);
   });
 
-  test.skip('likes persist across reload (localStorage)', async ({ page }) => {
+  test('likes persist across reload (localStorage)', async ({ page }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[0].title);
     const c0 = await intOf(card.getByTestId('like-count'));
