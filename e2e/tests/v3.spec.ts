@@ -14,7 +14,7 @@ test.describe('v3-nextjs', () => {
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
   });
 
-  test.skip('liking updates the card count and the global total', async ({ page }) => {
+  test('liking updates the card count and the global total', async ({ page }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[0].title);
     const count = card.getByTestId('like-count');
@@ -26,7 +26,7 @@ test.describe('v3-nextjs', () => {
     await expect.poll(() => intOf(total), { timeout: 10_000 }).toBe(t0 + 1);
   });
 
-  test.skip('like is shared across browsers (server-backed, not localStorage)', async ({ page, browser, baseURL }) => {
+  test('like is shared across browsers (server-backed, not localStorage)', async ({ page, browser, baseURL }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[1].title);
     const c0 = await intOf(card.getByTestId('like-count'));
