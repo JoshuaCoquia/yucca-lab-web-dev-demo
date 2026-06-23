@@ -1,23 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-
-    <!-- Import CSS -->
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- Import JS -->
-    <script src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YuCCA Lab Blog — v1 Basic</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body> 
-    <header>
-        <h1>Hello, World!</h1>
-    </header>
-    <p>This is a simple website created with just HTML, CSS, and JavaScript.</p>
+<body>
 
-    <!-- References `showMessage()` function in script.js file -->
-    <button onclick="showMessage()">Click me!</button>
+  <header>
+    <div class="site-title">
+      <h1>YuCCA Lab Blog</h1>
+      <p class="tagline">One blog, built three ways.</p>
+    </div>
+    <div class="global-likes">
+      <span class="likes-label">Total Likes:</span>
+      <span data-testid="global-total">0</span>
+    </div>
+  </header>
+
+  <div class="controls">
+    <input
+      type="text"
+      data-testid="search-input"
+      id="search-input"
+      placeholder="Search posts..."
+      aria-label="Search posts"
+    >
+    <select data-testid="sort-select" id="sort-select" aria-label="Sort posts">
+      <option value="newest">Newest</option>
+      <option value="oldest">Oldest</option>
+      <option value="title">Title A–Z</option>
+    </select>
+  </div>
+
+  <main class="post-grid">
+
+    <!-- Post: We Are Rendering on the Server Again (2026-03-22) -->
+    <article class="post-card" data-testid="post-card" data-date="2026-03-22" data-title="We Are Rendering on the Server Again">
+      <h2 class="post-title" data-testid="post-title">We Are Rendering on the Server Again</h2>
+      <time class="post-date" data-testid="post-date" datetime="2026-03-22">March 22, 2026</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">frontend</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">Server rendering left, single-page apps took over, and now rendering is moving back to the server. Here is why.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/rendering-on-the-server-again.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: BaaS Is a Loan, Not a Gift (2026-02-09) -->
+    <article class="post-card" data-testid="post-card" data-date="2026-02-09" data-title="BaaS Is a Loan, Not a Gift">
+      <h2 class="post-title" data-testid="post-title">BaaS Is a Loan, Not a Gift</h2>
+      <time class="post-date" data-testid="post-date" datetime="2026-02-09">February 9, 2026</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">backend</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">Backend-as-a-service gets you shipping fast by borrowing against future flexibility. Know the interest rate.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/baas-is-a-loan.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: Why the Virtual DOM Exists (2026-01-18) -->
+    <article class="post-card" data-testid="post-card" data-date="2026-01-18" data-title="Why the Virtual DOM Exists">
+      <h2 class="post-title" data-testid="post-title">Why the Virtual DOM Exists</h2>
+      <time class="post-date" data-testid="post-date" datetime="2026-01-18">January 18, 2026</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">frontend</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">The virtual DOM is not magic and not always faster. It is a bookkeeping trick that buys you a declarative model.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/why-the-virtual-dom-exists.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: The Cascade Is Not Your Enemy (2025-11-02) -->
+    <article class="post-card" data-testid="post-card" data-date="2025-11-02" data-title="The Cascade Is Not Your Enemy">
+      <h2 class="post-title" data-testid="post-title">The Cascade Is Not Your Enemy</h2>
+      <time class="post-date" data-testid="post-date" datetime="2025-11-02">November 2, 2025</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">frontend</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">Most CSS frustration comes from fighting specificity instead of understanding it. A short defense of the cascade.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/the-cascade-is-not-your-enemy.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: Bundlers in One Sitting (2025-09-14) -->
+    <article class="post-card" data-testid="post-card" data-date="2025-09-14" data-title="Bundlers in One Sitting">
+      <h2 class="post-title" data-testid="post-title">Bundlers in One Sitting</h2>
+      <time class="post-date" data-testid="post-date" datetime="2025-09-14">September 14, 2025</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">tooling</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">What a bundler actually does, why you cannot just ship your source files, and where the build step comes from.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/bundlers-in-one-sitting.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: Self-Hosting Without the Fear (2025-07-30) -->
+    <article class="post-card" data-testid="post-card" data-date="2025-07-30" data-title="Self-Hosting Without the Fear">
+      <h2 class="post-title" data-testid="post-title">Self-Hosting Without the Fear</h2>
+      <time class="post-date" data-testid="post-date" datetime="2025-07-30">July 30, 2025</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">backend</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">Running your own server is less scary than the cloud dashboards make it look. Start with one box and one service.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/self-hosting-without-the-fear.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: The Portfolio Is the Proof (2025-05-19) -->
+    <article class="post-card" data-testid="post-card" data-date="2025-05-19" data-title="The Portfolio Is the Proof">
+      <h2 class="post-title" data-testid="post-title">The Portfolio Is the Proof</h2>
+      <time class="post-date" data-testid="post-date" datetime="2025-05-19">May 19, 2025</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">career</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">A resume claims you can build things. A portfolio shows it. For early-career engineers, shown beats claimed.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/the-portfolio-is-the-proof.html">Read &rarr;</a>
+      </div>
+    </article>
+
+    <!-- Post: Read the Error Message (2024-12-05) -->
+    <article class="post-card" data-testid="post-card" data-date="2024-12-05" data-title="Read the Error Message">
+      <h2 class="post-title" data-testid="post-title">Read the Error Message</h2>
+      <time class="post-date" data-testid="post-date" datetime="2024-12-05">December 5, 2024</time>
+      <div class="post-tags" data-testid="post-tags">
+        <span class="tag">career</span>
+      </div>
+      <p class="post-excerpt" data-testid="post-excerpt">The single highest-leverage habit in early engineering is also the most ignored: actually reading the whole error.</p>
+      <div class="card-actions">
+        <button class="like-button" data-testid="like-button" aria-label="Like this post">&#9829;</button>
+        <span class="like-count" data-testid="like-count">0</span>
+        <a class="read-link" data-testid="read-link" href="posts/read-the-error-message.html">Read &rarr;</a>
+      </div>
+    </article>
+
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
