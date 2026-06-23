@@ -15,8 +15,9 @@ Copy the 8 markdown files from `../content` into this project (e.g. `src/content
 Vite's `import.meta.glob` (eager, as raw strings). Parse frontmatter with a **small browser-safe
 parser** (a short regex/split over the `---` block is fine). Render post bodies with **`marked`**.
 
-> Do NOT use `gray-matter` — it depends on Node's `Buffer` and breaks in a browser bundle. Add only
-> `react-router` and `marked` as new dependencies.
+> Do NOT use `gray-matter` — it depends on Node's `Buffer` and breaks in a browser bundle. Add
+> `react-router` and `marked` as runtime dependencies, plus **Tailwind CSS** (dev dependency) for
+> styling — see requirement 6.
 
 ## Requirements (verifiable)
 
@@ -38,10 +39,11 @@ parser** (a short regex/split over the `---` block is fine). Render post bodies 
    - A `<Link>` back to the index.
 5. Componentize sensibly: a `PostCard`, a header/layout, an index page, a post page. Keep types
    simple (`string`, `number`, a `Post` interface).
-6. **Styling (intentional):** component-scoped styling written directly — plain CSS or CSS Modules,
-   the clean modern hand-styled look you get from just asking an assistant to style the components.
-   **Do not add a UI component library** (no MUI, no shadcn) — that look is reserved for v3 so the
-   three versions read as distinct styling eras.
+6. **Styling (intentional):** use **Tailwind CSS** (utility-first) — the dominant styling approach
+   for modern React apps. Add Tailwind to the Vite project and style components with utility classes.
+   **Do not add a UI component library** (no MUI, no shadcn) — prebuilt components are reserved for
+   v3, so the three versions read as distinct styling eras: hand-written CSS → utility classes →
+   component library.
 
 ## Constraints
 

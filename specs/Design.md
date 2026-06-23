@@ -56,11 +56,11 @@ so the aesthetic becomes a quiet secondary narrative about how front-end styling
 - **v1-basic** — hand-written CSS in the style of a site built *before* utility frameworks were
   everywhere. System fonts, a hand-rolled grid, a slightly dated but legible look. No framework, no
   build — the CSS is authored by hand the way it would have been then.
-- **v2-react** — component-scoped styling written directly (plain CSS / CSS Modules), the clean,
-  modern hand-styled look you get from just asking an assistant to style the components. Still no UI
-  component library.
+- **v2-react** — styled with **Tailwind CSS** (utility-first), the dominant styling approach for
+  modern React apps. Utilities, but no component library yet.
 - **v3-nextjs** — assembled from a real UI component library (**shadcn/ui** preferred, or **MUI**),
-  i.e. how a polished product app is built today.
+  i.e. how a polished product app is built today. shadcn builds on the same Tailwind v2 introduced —
+  now with prebuilt, accessible components on top.
 
 This divergence does **not** confound the primary comparison: the measurable beats (manual DOM
 wiring vs component state; empty root vs server-rendered HTML) are about behavior and markup, not
