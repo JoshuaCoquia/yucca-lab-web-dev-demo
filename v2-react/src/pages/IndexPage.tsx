@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { posts } from '../content/posts'
+import { useLikes } from '../LikesContext'
 import PostCard from '../components/PostCard'
 
 type SortValue = 'newest' | 'oldest' | 'title'
@@ -7,10 +8,7 @@ type SortValue = 'newest' | 'oldest' | 'title'
 export default function IndexPage() {
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<SortValue>('newest')
-  // Likes state: record of slug -> count (shared state for feature 5)
-  const [likes] = useState<Record<string, number>>({})
-
-  const globalTotal = Object.values(likes).reduce((sum, n) => sum + n, 0)
+  const { likes, like, globalTotal } = useLikes()
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase()
@@ -28,10 +26,6 @@ export default function IndexPage() {
 
     return result
   }, [search, sort])
-
-  function handleLike(_slug: string) {
-    // Likes feature implemented in a later step
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -70,7 +64,7 @@ export default function IndexPage() {
               key={post.slug}
               post={post}
               likeCount={likes[post.slug] ?? 0}
-              onLike={handleLike}
+              onLike={() => like(post.slug)}
             />
           ))}
         </div>
