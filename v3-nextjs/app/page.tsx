@@ -1,9 +1,19 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/content';
+import { getAllLikeCounts } from '@/lib/db';
+import LikeButton from './components/LikeButton';
 
-// Server Component — reads all posts at build time (SSG)
-export default function HomePage() {
+// Server Component — reads all posts and like counts at request time.
+// DB may not be available during a cold static pre-render (CI builds the DB
+// before this page is served, so runtime is always fine).
+export default async function HomePage() {
   const posts = getAllPosts();
+  let likeCounts: Record<string, number> = {};
+  try {
+    likeCounts = await getAllLikeCounts();
+  } catch {
+    // DB not yet available (e.g. first SSG pass without migrate) — default to 0.
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
@@ -27,15 +37,7 @@ export default function HomePage() {
               {post.excerpt}
             </p>
             <div className="flex items-center gap-4 mt-auto">
-              <button
-                data-testid="like-button"
-                className="text-sm border rounded px-3 py-1 hover:bg-zinc-50"
-              >
-                Like
-              </button>
-              <span data-testid="like-count" className="text-sm text-zinc-500">
-                0
-              </span>
+              <LikeButton slug={post.slug} initialCount={likeCounts[post.slug] ?? 0} />
               <Link
                 href={`/posts/${post.slug}`}
                 data-testid="read-link"

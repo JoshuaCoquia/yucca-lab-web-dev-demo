@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import GlobalTotal from './components/GlobalTotal';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,7 +32,7 @@ export default function RootLayout({
         <header className="border-b px-6 py-4 flex items-center justify-between">
           <h1 className="text-xl font-semibold">YuCCA Blog</h1>
           <span className="text-sm text-zinc-500">
-            Total likes: <span data-testid="global-total">0</span>
+            Total likes: <GlobalTotal />
           </span>
         </header>
         <main className="flex-1">{children}</main>
