@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import type { Post } from '../types'
+import PostMeta from './PostMeta'
 
 interface PostCardProps {
   post: Post
@@ -13,12 +14,7 @@ export default function PostCard({ post, likeCount, onLike }: PostCardProps) {
       <h2 data-testid="post-title" className="text-lg font-semibold">
         {post.title}
       </h2>
-      <p data-testid="post-date" className="text-sm text-gray-500">
-        {post.date}
-      </p>
-      <p data-testid="post-tags" className="text-xs text-blue-600">
-        {post.tags.join(', ')}
-      </p>
+      <PostMeta post={post} variant="card" />
       <p data-testid="post-excerpt" className="text-sm text-gray-700 flex-1">
         {post.excerpt}
       </p>
