@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Setup
+
+The likes feature uses Prisma + SQLite and needs a `DATABASE_URL`. Create your
+own `.env` from the template (it's gitignored, so your copy never gets committed),
+then apply migrations:
+
+```bash
+cp .env.example .env
+pnpm exec prisma migrate deploy   # creates prisma/dev.db
+```
+
 ## Getting Started
 
 First, run the development server:
