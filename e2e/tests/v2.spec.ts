@@ -6,20 +6,20 @@ import { cardByTitle, intOf, norm, visibleTitles } from './_shared';
 // Same contract as v1, plus the "empty root in raw HTML" beat.
 
 test.describe('v2-react', () => {
-  test.skip('renders all 8 post cards', async ({ page }) => {
+  test('renders all 8 post cards', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByTestId('post-card')).toHaveCount(8);
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
   });
 
-  test.skip('search filters cards by title (derived state)', async ({ page }) => {
+  test('search filters cards by title (derived state)', async ({ page }) => {
     await page.goto('/');
     await page.getByTestId('search-input').fill(uniqueSearch.word);
     await expect(page.getByTestId('post-card')).toHaveCount(1);
     await expect(page.getByTestId('post-card')).toContainText(uniqueSearch.post.title);
   });
 
-  test.skip('sort reorders the cards', async ({ page }) => {
+  test('sort reorders the cards', async ({ page }) => {
     await page.goto('/');
     await page.getByTestId('sort-select').selectOption('oldest');
     expect(await visibleTitles(page)).toEqual(byOldest.map((p) => p.title));
