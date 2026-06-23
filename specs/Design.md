@@ -27,8 +27,11 @@ technology had to exist; the demo shows *what* it looks like.
   1. **No tooling → tooling.** v1 opens in a browser; v2 needs `pnpm install` and a build step.
   2. **Manual DOM → component state.** A like counter that must keep a per-post count and a global
      total in sync — wired by hand in v1, automatic in v2.
-  3. **Client rendering → server rendering (SEO).** View-source on v2 shows an empty root element;
-     view-source on v3 shows real HTML. This is the SEO payoff and the reason meta-frameworks exist.
+  3. **Client rendering → server rendering (SEO).** This is a *round-trip*: view-source on v1
+     already shows real HTML (SEO was free in the no-tooling version); v2 *sacrifices* it for
+     interactivity (an empty root element); v3 *recovers* it with tooling (real HTML again). The
+     payoff is getting v1's indexable HTML back without giving up v2's component model — the reason
+     meta-frameworks exist.
 
 ## Non-Goals
 
@@ -72,10 +75,11 @@ own moment in time.
 ### v1-basic — vanilla, no build
 
 - `index.html` contains the post cards as **static HTML** (content is real in the markup — this is
-  itself the contrast with v2's empty root). Header shows a global like total. Controls: search
-  input + sort dropdown.
+  itself the contrast with v2's empty root, and the starting point of the SEO round-trip in beat 3:
+  the no-tooling version already ships indexable HTML). Header shows a global like total. Controls:
+  search input + sort dropdown.
 - `styles.css` styles the grid and cards.
-- `scripts.js` *enhances* existing DOM: search filters cards, sort reorders nodes, like buttons
+- `script.js` *enhances* existing DOM: search filters cards, sort reorders nodes, like buttons
   update a per-card count, the global total, and `localStorage`. The point: every update is wired by
   hand, and keeping the per-card counts and the global total in sync is manual.
 - Full posts are **separate static HTML pages** (`posts/<slug>.html`). Navigation is a full page
@@ -101,8 +105,11 @@ own moment in time.
 - File-based routing: `app/page.tsx` (index), `app/posts/[slug]/page.tsx` with
   `generateStaticParams` → static generation.
 - Per-post `generateMetadata` for real `<title>`/description — the concrete SEO win.
-- Likes are a small client component (`'use client'` + `localStorage`). Teaching nuance:
-  interactivity still needs client JS even when content is server-rendered.
+- Likes are a small client component (`'use client'` + `localStorage`) that **keeps v2's
+  lifted-state design** — the per-post count and global total still share one source of truth and
+  cannot desync, so beat 2's payoff is preserved, not regressed. Teaching nuance: even with
+  server-rendered content, interactivity is still a client-side island — the article HTML arrives
+  finished from the server, but the like button is hydrated React running in the browser.
 - View-source shows the full article HTML. This is the beat the whole talk builds toward.
 
 ## Alternatives Considered

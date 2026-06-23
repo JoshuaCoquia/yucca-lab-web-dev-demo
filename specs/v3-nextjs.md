@@ -1,7 +1,7 @@
 # Claude Code Prompt — v3-nextjs
 
 Run this from inside the `v3-nextjs` folder (the `create-next-app` App Router + TS scaffold already
-exists). Read `../DESIGN.md` first for rationale; this is the build spec for **v3-nextjs** only.
+exists). Read `../specs/Design.md` first for rationale; this is the build spec for **v3-nextjs** only.
 
 ---
 

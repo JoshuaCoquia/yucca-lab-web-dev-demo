@@ -1,7 +1,7 @@
 # Claude Code Prompt — v2-react
 
 Run this from inside the `v2-react` folder (the Vite + React + TS scaffold already exists). Read
-`../DESIGN.md` first for rationale; this is the build spec for **v2-react** only.
+`../specs/Design.md` first for rationale; this is the build spec for **v2-react** only.
 
 ---
 

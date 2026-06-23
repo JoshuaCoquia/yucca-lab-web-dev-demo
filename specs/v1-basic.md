@@ -1,6 +1,6 @@
 # Claude Code Prompt — v1-basic
 
-Run this from the repo root. Read `DESIGN.md` first for the full rationale; this prompt is the build
+Run this from the repo root. Read `specs/Design.md` first for the full rationale; this prompt is the build
 spec for the **v1-basic** folder only.
 
 ---
