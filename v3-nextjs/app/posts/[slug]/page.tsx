@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { marked } from 'marked';
 import { getAllPosts, getPostBySlug } from '@/lib/content';
-import { Badge } from '@/components/ui/badge';
+import TagList from '@/app/components/TagList';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -50,13 +50,7 @@ export default async function PostPage({ params }: Props) {
           </h1>
           <div className="flex items-center gap-3 flex-wrap">
             <time className="text-sm text-muted-foreground">{post.date}</time>
-            <div className="flex gap-1.5 flex-wrap">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+            <TagList tags={post.tags} className="flex gap-1.5 flex-wrap" />
           </div>
         </header>
         <div
