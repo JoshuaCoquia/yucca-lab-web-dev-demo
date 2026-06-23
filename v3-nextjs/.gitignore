@@ -30,10 +30,10 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files — keep real .env (and .env.local) out of git
 .env*
-# ...but commit the non-secret default DATABASE_URL so the demo runs on a fresh clone
-!.env
+# ...but DO track the template so contributors can copy it to their own .env
+!.env.example
 
 # vercel
 .vercel
