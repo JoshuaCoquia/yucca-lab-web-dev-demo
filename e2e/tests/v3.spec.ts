@@ -1,17 +1,34 @@
 import { test, expect } from '@playwright/test';
-import { posts } from '../fixtures/posts';
+import { byOldest, byTitle, posts, uniqueSearch } from '../fixtures/posts';
 import { bodySnippet, cardByTitle, intOf, norm, visibleTitles } from './_shared';
 
 // v3-nextjs — Next.js App Router, SSG content + a SQLite-backed Server Action
 // for likes. The headline beats: server-rendered article HTML, and a like count
 // that is SHARED across browsers (proving a real backend, not localStorage).
-// Search/sort are optional for v3 (per v3-nextjs.md) and intentionally not gated.
+// Search/sort run client-side over the server-fetched list (same derived-state
+// model as v2), implemented as a 'use client' island so the page stays a Server
+// Component.
 
 test.describe('v3-nextjs', () => {
   test('renders all 8 post cards', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByTestId('post-card')).toHaveCount(8);
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
+  });
+
+  test('search filters cards by title (derived state)', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('search-input').fill(uniqueSearch.word);
+    await expect(page.getByTestId('post-card')).toHaveCount(1);
+    await expect(page.getByTestId('post-card')).toContainText(uniqueSearch.post.title);
+  });
+
+  test('sort reorders the cards', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('sort-select').selectOption('oldest');
+    expect(await visibleTitles(page)).toEqual(byOldest.map((p) => p.title));
+    await page.getByTestId('sort-select').selectOption('title');
+    expect(await visibleTitles(page)).toEqual(byTitle.map((p) => p.title));
   });
 
   test('liking updates the card count and the global total', async ({ page }) => {
