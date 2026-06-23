@@ -1,6 +1,6 @@
 # Claude Code Prompt — v1-basic
 
-Run this from the repo root. Read `DESIGN.md` first for the full rationale; this prompt is the build
+Run this from the repo root. Read `specs/Design.md` first for the full rationale; this prompt is the build
 spec for the **v1-basic** folder only.
 
 ---
@@ -28,7 +28,7 @@ generate the HTML now; the page does not parse markdown at runtime).
 2. `v1-basic/styles.css`
    - Styles the header, controls, card grid, and cards. Clean and legible; responsive enough to not
      break on a projector. No frameworks.
-3. `v1-basic/scripts.js` — progressive enhancement over the existing DOM:
+3. `v1-basic/script.js` — progressive enhancement over the existing DOM:
    - **Search**: filters visible cards by title as the user types.
    - **Sort**: reorders the card nodes in the DOM by the selected option.
    - **Likes**: clicking a card's like button increments that card's count, updates the global total
