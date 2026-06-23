@@ -18,7 +18,10 @@ browser). Render post bodies to HTML with **`marked`** on the server.
 ## Requirements (verifiable)
 
 1. Index — `app/page.tsx` as a **Server Component** that reads `content/*.md` at build time and lists
-   post cards (title, date, tags, excerpt, link to the post). Header with site title.
+   post cards (title, date, tags, excerpt, link to the post). Header with site title. Include
+   **search + sort** controls (`search-input`, `sort-select` with option values exactly
+   `newest`/`oldest`/`title`). Keep the page a Server Component and implement search/sort as a
+   small `'use client'` island over the server-fetched list — derived state, same model as v2.
 2. Post route — `app/posts/[slug]/page.tsx`
    - Implement `generateStaticParams` so every post is **statically generated** (SSG).
    - Read and render the post's markdown body to HTML server-side.
@@ -36,8 +39,6 @@ browser). Render post bodies to HTML with **`marked`** on the server.
    - Keep post **content** statically generated; only the like count is a dynamic, server-backed
      island. The SQLite file is **demo-only** — a deployed app would point Prisma at a hosted DB;
      that swap is a talking point, not something to build.
-   - Keep search/sort optional; if included, they can be client components over the server-fetched
-     list.
 4. Navigation uses `next/link`.
 5. **Styling (intentional):** build the UI from a real component library — **shadcn/ui** (preferred;
    Tailwind + Radix primitives) or **MUI** — so v3 looks like a polished, library-assembled modern
