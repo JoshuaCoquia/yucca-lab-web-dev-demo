@@ -50,9 +50,9 @@ implement **to these selectors and routes** so the tests pass.
 
 Index / header / controls:
 - `global-total` — header element showing the global like total (a number).
-- `search-input` — the search text input. **Required in v1 + v2** (gated). Optional in v3.
+- `search-input` — the search text input. **Required in v1 + v2 + v3** (gated).
 - `sort-select` — the sort `<select>`. Option **values** must be exactly `newest`, `oldest`,
-  `title`. **Required in v1 + v2** (gated). Optional in v3.
+  `title`. **Required in v1 + v2 + v3** (gated).
 - `post-card` — one per post (exactly 8 on the index).
   - inside each card: `post-title`, `post-date`, `post-tags`, `post-excerpt`,
     `like-button`, `like-count` (a number), `read-link` (anchor to the post).
@@ -63,9 +63,9 @@ Post page:
 ### Behaviors asserted (per beat)
 
 1. **Render** — index shows exactly 8 `post-card`s; each has non-empty title/excerpt and ≥1 tag.
-2. **Search** *(v1 + v2 only)* — typing a substring unique to one title into `search-input` leaves
+2. **Search** — typing a substring unique to one title into `search-input` leaves
    exactly the matching card(s) visible.
-3. **Sort** *(v1 + v2 only)* — selecting `oldest` orders cards by ascending date; `title`
+3. **Sort** — selecting `oldest` orders cards by ascending date; `title`
    alphabetical by title. (Assert the order of visible `post-title`s.)
 4. **Like** — clicking the first card's `like-button` increments that card's `like-count` by 1 **and**
    `global-total` by 1.
