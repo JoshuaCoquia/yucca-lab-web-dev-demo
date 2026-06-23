@@ -13,14 +13,14 @@ test.describe('v1-basic', () => {
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
   });
 
-  test.skip('search filters cards by title', async ({ page }) => {
+  test('search filters cards by title', async ({ page }) => {
     await page.goto('/');
     await page.getByTestId('search-input').fill(uniqueSearch.word);
     await expect(page.locator('[data-testid="post-card"]:visible')).toHaveCount(1);
     await expect(page.locator('[data-testid="post-card"]:visible')).toContainText(uniqueSearch.post.title);
   });
 
-  test.skip('sort reorders the cards', async ({ page }) => {
+  test('sort reorders the cards', async ({ page }) => {
     await page.goto('/');
     await page.getByTestId('sort-select').selectOption('oldest');
     expect(await visibleTitles(page)).toEqual(byOldest.map((p) => p.title));
@@ -28,7 +28,7 @@ test.describe('v1-basic', () => {
     expect(await visibleTitles(page)).toEqual(byTitle.map((p) => p.title));
   });
 
-  test.skip('liking updates the card count and the global total', async ({ page }) => {
+  test('liking updates the card count and the global total', async ({ page }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[0].title);
     const count = card.getByTestId('like-count');
@@ -40,7 +40,7 @@ test.describe('v1-basic', () => {
     await expect.poll(() => intOf(total)).toBe(t0 + 1);
   });
 
-  test.skip('likes persist across reload (localStorage)', async ({ page }) => {
+  test('likes persist across reload (localStorage)', async ({ page }) => {
     await page.goto('/');
     const card = cardByTitle(page, posts[0].title);
     const c0 = await intOf(card.getByTestId('like-count'));
