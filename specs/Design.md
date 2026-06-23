@@ -15,7 +15,8 @@ technology had to exist; the demo shows *what* it looks like.
 - **v2-react** — Vite + React + TypeScript + React Router. A real client-side app. Everything
   renders in the browser.
 - **v3-nextjs** — Next.js + TypeScript. Server-rendered / statically generated. Content lives in
-  files, HTML arrives finished.
+  files, HTML arrives finished — and dynamic state (likes) is persisted in a real database via a
+  server action. This is the full web app: the capstone of basic site → complex client app → app.
 
 ## Goals
 
@@ -35,9 +36,13 @@ technology had to exist; the demo shows *what* it looks like.
 
 ## Non-Goals
 
-- Not a production blog. No CMS UI, no comments, no auth, no database.
-- No cross-device sync. Likes persist per-browser via `localStorage`; "real sync needs a backend"
-  is a talking point, not a feature.
+- Not a production blog. No CMS UI, no comments, no auth. v3 *does* use a small database, but only
+  to model how a real Next.js app reaches a backend — it is not production-hardened (no auth, no
+  abuse protection, a local SQLite file).
+- Like persistence differs by version on purpose. v1 and v2 persist likes per-browser via
+  `localStorage` (no cross-device sync — "real sync needs a backend" is the talking point). v3 then
+  *delivers* that backend: likes are stored server-side and shared across all visitors. That jump is
+  a feature of the progression, not an accident.
 - No exhaustive feature parity. Each version implements the shared core plus exactly what it needs
   to make its beat land.
 - No monorepo tooling (no workspaces, no Turborepo). Each folder is independent on purpose.
@@ -105,12 +110,18 @@ own moment in time.
 - File-based routing: `app/page.tsx` (index), `app/posts/[slug]/page.tsx` with
   `generateStaticParams` → static generation.
 - Per-post `generateMetadata` for real `<title>`/description — the concrete SEO win.
-- Likes are a small client component (`'use client'` + `localStorage`) that **keeps v2's
-  lifted-state design** — the per-post count and global total still share one source of truth and
-  cannot desync, so beat 2's payoff is preserved, not regressed. Teaching nuance: even with
-  server-rendered content, interactivity is still a client-side island — the article HTML arrives
-  finished from the server, but the like button is hydrated React running in the browser.
-- View-source shows the full article HTML. This is the beat the whole talk builds toward.
+- Likes are **server-persisted**: a Prisma-managed **SQLite** database (local file) with one `Like`
+  row per post, mutated by a `likePost(slug)` **Server Action**. A small `'use client'` like button
+  calls the action; the count reflects *all visitors*, not one browser — the real upgrade over
+  v1/v2's `localStorage`. The DB is the single source of truth, so the per-post count and the header
+  total can't desync; after a like, `revalidatePath` refreshes both. (Local SQLite is demo-only — a
+  deployed app would point Prisma at a hosted DB; that swap is the talking point, not something we
+  build.)
+- The article content is still **statically generated** (the SEO beat is intact); only the like
+  count is a dynamic, server-backed island. Teaching nuance: one page can ship finished HTML *and*
+  carry real server-mutated state — static content, dynamic data, same page.
+- View-source shows the full article HTML. This is the beat the whole talk builds toward — and v3 is
+  now a real full-stack app: server-rendered content plus a real backend behind the likes.
 
 ## Alternatives Considered
 
@@ -119,9 +130,14 @@ own moment in time.
 - **`gray-matter` in v2 (rejected).** Node `Buffer` dependency breaks in a Vite browser bundle.
   Browser-safe frontmatter parsing avoids an hour of polyfill debugging. (`gray-matter` is fine in
   v3 because that runs on the server.)
-- **Database for v3 (rejected).** A DB reads as "more full-stack" but is the wrong tool for a blog;
-  git-based markdown files are idiomatic and match a real portfolio. Volume was never the point;
-  *rendering location* is.
+- **Database for v3 *content* (rejected) — but a DB for *dynamic state* (accepted).** Post content
+  stays git-based markdown: idiomatic for a blog, matches a real portfolio, and keeps content
+  identical across all three versions. *Dynamic* state (likes), though, is exactly what a database is
+  for — and v3's role in the progression is to be a real web app — so it persists likes via Prisma +
+  SQLite and a server action. The DB models the full-stack pattern; it does not store the posts.
+- **REST Route Handler for likes (rejected in favor of a Server Action).** An `app/api/...` endpoint
+  works, but a `'use server'` action is the idiomatic App Router way to mutate and keeps the demo
+  closer to how a modern Next.js codebase is actually written.
 - **Separate HTML/CSS/JS stages in v1 (rejected).** Splitting the no-tooling version into three sub-
   versions burned demo time on a contrast not worth showing at 10–15 minutes.
 - **Showing `pnpm install` live (rejected).** The beat is the conceptual jump (file → toolchain),
