@@ -32,7 +32,7 @@ generate the HTML now; the page does not parse markdown at runtime).
      everywhere — system fonts, a hand-rolled grid (floats/flexbox is fine, no CSS framework), a
      slightly dated but tidy look. This is hand-written, of-its-era CSS on purpose; the dated feel is
      part of the demo's story, not an accident.
-3. `v1-basic/scripts.js` — progressive enhancement over the existing DOM:
+3. `v1-basic/script.js` — progressive enhancement over the existing DOM:
    - **Search**: filters visible cards by title as the user types.
    - **Sort**: reorders the card nodes in the DOM by the selected option.
    - **Likes**: clicking a card's like button increments that card's count, updates the global total
