@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We Are Rendering on the Server Again — YuCCA Lab Blog</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="site-title">
+      <h1>YuCCA Lab Blog</h1>
+      <p class="tagline">One blog, built three ways.</p>
+    </div>
+  </header>
+
+  <main class="post-page">
+    <a class="back-link" data-testid="back-link" href="../index.html">&larr; Back to all posts</a>
+
+    <article class="post-full">
+      <h1 class="post-title" data-testid="post-title">We Are Rendering on the Server Again</h1>
+      <time class="post-date" datetime="2026-03-22">March 22, 2026</time>
+      <div class="post-tags">
+        <span class="tag">frontend</span>
+      </div>
+      <div class="post-body" data-testid="post-body">
+        <p>The web rendered on the server for years, then single-page apps moved everything to the client for snappier navigation. The cost showed up later: blank initial loads, weak SEO, and shipping a small application just to display an article.</p>
+        <p>Meta-frameworks pulled rendering back to the server — or to build time — so the browser receives finished HTML and hydrates interactivity on top. View-source tells the whole story: an empty root element on a client-rendered app, real content on a server-rendered one. The pendulum did not swing back by accident.</p>
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>

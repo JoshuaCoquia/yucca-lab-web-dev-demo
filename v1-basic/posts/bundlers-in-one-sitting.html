@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bundlers in One Sitting — YuCCA Lab Blog</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="site-title">
+      <h1>YuCCA Lab Blog</h1>
+      <p class="tagline">One blog, built three ways.</p>
+    </div>
+  </header>
+
+  <main class="post-page">
+    <a class="back-link" data-testid="back-link" href="../index.html">&larr; Back to all posts</a>
+
+    <article class="post-full">
+      <h1 class="post-title" data-testid="post-title">Bundlers in One Sitting</h1>
+      <time class="post-date" datetime="2025-09-14">September 14, 2025</time>
+      <div class="post-tags">
+        <span class="tag">tooling</span>
+      </div>
+      <div class="post-body" data-testid="post-body">
+        <p>A browser cannot run your JSX, your TypeScript, or your hundred separate module files efficiently. A bundler walks your import graph, transforms each file into something browsers understand, and stitches the result into a small number of optimized assets. That is the build step everyone complains about.</p>
+        <p>The moment you add a framework, you inherit this machinery whether you wanted it or not. The cost is real — install time, config, a <code>node_modules</code> folder you do not read — but so is the payoff: modern syntax, code splitting, and assets sized for the network instead of for your filesystem.</p>
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why the Virtual DOM Exists — YuCCA Lab Blog</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="site-title">
+      <h1>YuCCA Lab Blog</h1>
+      <p class="tagline">One blog, built three ways.</p>
+    </div>
+  </header>
+
+  <main class="post-page">
+    <a class="back-link" data-testid="back-link" href="../index.html">&larr; Back to all posts</a>
+
+    <article class="post-full">
+      <h1 class="post-title" data-testid="post-title">Why the Virtual DOM Exists</h1>
+      <time class="post-date" datetime="2026-01-18">January 18, 2026</time>
+      <div class="post-tags">
+        <span class="tag">frontend</span>
+      </div>
+      <div class="post-body" data-testid="post-body">
+        <p>Touching the real DOM directly is fine until you are doing it in fifteen places and cannot remember which handler updated which node. The virtual DOM is React's answer: describe what the UI should look like for a given state, and let the library compute the difference and apply the minimal set of changes.</p>
+        <p>The win is not raw speed; hand-tuned imperative code can beat it. The win is that you stop maintaining a mental model of every mutation. You declare the target, React reconciles the path. That trade — a little overhead for a lot less bookkeeping — is the whole pitch.</p>
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>
