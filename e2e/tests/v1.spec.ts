@@ -7,7 +7,7 @@ import { cardByTitle, intOf, norm, visibleTitles } from './_shared';
 // delivers (see ../../specs/automation.md → Incremental gating).
 
 test.describe('v1-basic', () => {
-  test.skip('renders all 8 post cards', async ({ page }) => {
+  test('renders all 8 post cards', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByTestId('post-card')).toHaveCount(8);
     expect(new Set(await visibleTitles(page))).toEqual(new Set(posts.map((p) => p.title)));
@@ -60,7 +60,7 @@ test.describe('v1-basic', () => {
     await expect(page.getByTestId('post-card').first()).toBeVisible();
   });
 
-  test.skip('index raw HTML contains real post titles (static markup)', async ({ request }) => {
+  test('index raw HTML contains real post titles (static markup)', async ({ request }) => {
     const html = await (await request.get('/')).text();
     for (const p of posts.slice(0, 3)) {
       expect(norm(html)).toContain(norm(p.title));
