@@ -10,12 +10,17 @@ this file wins — those are the test contract.
 
 ## Model
 
-- **Three builders run concurrently**, one per project, each in its **own git worktree** (they cannot
-  share a working copy — concurrent `git` checkouts collide).
-- **Within a project, features are built sequentially** — one feature → one PR → merge → next. This
-  caps active agents at ~3, which is the main lever keeping token burn bounded.
-- Each project's folder is disjoint, so concurrent merges to `main` never conflict.
-- Builders use **Sonnet**. A **token budget** bounds the whole run; it stops when exhausted.
+- **The three projects build concurrently**, each in its **own git worktree** (they cannot share a
+  working copy — concurrent `git` checkouts collide). Folders are disjoint, so concurrent merges to
+  `main` never conflict.
+- **Within a project, features run in dependency order** (scaffold → content → routing → pages →
+  likes → styling); independent steps may overlap. There is **no artificial agent cap** — the
+  workflow's built-in concurrency limit is the only ceiling, and a larger project (v3) naturally uses
+  more agents over the run than a smaller one (v1).
+- Builders are pinned to **Sonnet** per-agent (the session model is irrelevant).
+- **No token budget.** The run goes until the work is done or the subscription rate-limit pauses it.
+  Stopping mid-run is safe: every already-merged PR stays merged; an unfinished project just leaves
+  open PRs to resume.
 
 ## Definition of done (per project)
 
@@ -102,10 +107,19 @@ relevant app on its port. CI runs only the spec for the changed project (see CI 
   CI — concurrent PRs don't cross-trigger.
 - Steps: checkout → setup node + pnpm → install (project + `e2e/`) → `playwright install --with-deps
   chromium` → build the app → run that project's spec (Playwright boots the server via `webServer`).
-- **Branch protection** on `main` requires the matching check. Builders open PRs with
-  `gh pr merge --auto --squash`, so a PR merges itself only when its check is green; a red PR stays
-  open for morning review.
+- **Merge gate (no repo settings required):** the builder opens a PR, runs `gh run watch` to wait for
+  this PR's CI, and merges with `gh pr merge --squash --delete-branch` **only when every check is
+  green**. A red PR is left open for morning review. The agent never merges red.
+- *(Optional hardening)* enable branch protection requiring these checks if you want GitHub to enforce
+  the gate rather than relying on agent discipline — see "Human steps". Not required for the run.
 - Concurrency group per branch cancels superseded runs (saves CI minutes).
+
+### Incremental gating (skip strategy)
+
+The full suite is written up front (Gate phase), but a feature PR can only pass the beats it has
+delivered. So **every beat starts as `test.skip`**, and **each feature PR un-skips exactly the
+beat(s) it implements**, keeping the rest skipped. CI green therefore means "all delivered beats
+pass". A project is **done** when its spec has no remaining skips.
 
 ## Per-project feature checklist (the PR sequence)
 
@@ -138,18 +152,40 @@ passing as later ones land). Builder may merge a PR only after its own CI is gre
 5. Like button + `global-total` as client components calling the action (shared across visitors).
 6. shadcn/ui styling pass.
 
-## Launch & kill switch
+## Human steps (do these yourself, before launching)
 
-- Launch is a single background **Workflow** run: 3 worktree-isolated Sonnet builders, features
-  sequential per project, bounded by a token budget.
-- It is one job — stop it anytime; already-merged PRs stay merged.
-- Morning review: open PRs (= things that failed CI) are the only manual work; everything merged is
-  test-green.
+These can't (or shouldn't) be done by the workflow:
+
+1. **CI capacity — the most likely thing to halt the run.** Overnight fix loops can burn a lot of
+   Actions minutes. If this repo is **private** on the free plan (2000 min/mo), either make it
+   **public** (unlimited Actions) or confirm you have enough minutes/credit.
+2. **Actions enabled** — Settings → Actions → "Allow all actions" (default on); confirm it's not
+   disabled.
+3. **`gh` auth** — already logged in with repo write (you've been merging), nothing to do.
+4. **Merge this setup PR to `main` first**, so the builders read the final specs *and* the workflow
+   script from `main`.
+5. *(Optional)* branch protection on `main` requiring the three CI checks, if you want GitHub to
+   enforce the gate instead of relying on agent discipline. A required check can only be added after
+   it has run once, so do this only after the Gate phase has produced its first CI run.
+
+## Launch
+
+In a **new chat in this repo** (fresh context), opt into orchestration and run the saved script:
+
+> Run the workflow at `.claude/workflows/build-demos.js`.
+
+It runs in the background as one job: a **Gate** phase builds the `e2e/` harness + CI workflows, then
+**v1 / v2 / v3 build concurrently**, each feature a PR that self-merges when its CI is green. Stop it
+anytime — merged work persists; an unfinished project just leaves open PRs to resume. In the morning,
+open PRs are the only manual work; everything merged is test-green.
 
 ## Risks (see Design.md too)
 
 - **Green CI ≠ perfect UX.** Tests prove the beats; they don't prove polish. Isolation contains any
   bad merge to one folder.
-- **Stalls** (failing test, loop) burn tokens; the budget cap and per-feature scope bound this.
-- **CI flakiness** (browser install, rate limits) is the likeliest "why is it stuck"; CI has retries.
+- **Stalls** (a beat that won't go green, a fix loop) burn tokens and CI minutes; each feature caps
+  its retries (then leaves the PR open) to bound this.
+- **CI flakiness** (browser install, rate limits) is the likeliest "why is it stuck"; CI retries.
+- **The Gate is built by the workflow.** If you want the gate (tests + CI) built by hand first for
+  extra reliability — since everything trusts it — ask before launching and it can be pre-built.
 - **Local SQLite** in v3 is demo-only; CI tests the shared-count behavior in-process, not a deploy.
