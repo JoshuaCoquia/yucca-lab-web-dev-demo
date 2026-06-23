@@ -17,9 +17,9 @@ const MERGE = [
   'When the feature is implemented:',
   '1. In the project e2e spec, REMOVE `.skip` from ONLY the beat(s) this feature delivers; leave beats for unbuilt features skipped.',
   '2. Optionally run a quick local build/typecheck to catch obvious errors (do NOT rely on local test runs as the gate).',
-  '3. Create a feature branch, commit, push, and open a PR with `gh pr create`.',
+  '3. Create a feature branch. Commit your work in small, logical pieces — each commit one coherent unit (e.g. markup, then styles, then behavior; deps/config separate from code) so no single commit is a giant dump. Then push and open a PR with `gh pr create`.',
   "4. Wait for this PR's CI with `gh run watch` (or `gh pr checks <branch> --watch`).",
-  '5. ONLY when every check is green, merge with `gh pr merge --squash --delete-branch`.',
+  '5. ONLY when every check is green, merge with `gh pr merge --rebase --delete-branch` (rebase keeps your granular commits on main; do NOT squash). If the rebase merge is blocked, fall back to `gh pr merge --merge --delete-branch`.',
   '6. If CI is red: read `gh run view --log-failed`, fix, push, and re-watch — up to 4 attempts total.',
   '7. If still red after 4 attempts, LEAVE THE PR OPEN and return a short note naming the failing test. NEVER merge a red PR.',
 ].join('\n')
