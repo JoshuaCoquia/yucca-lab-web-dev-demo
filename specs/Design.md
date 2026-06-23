@@ -83,8 +83,11 @@ consume this same content; only the *consumption mechanism* differs.
 - File-based routing: `app/page.tsx` (index), `app/posts/[slug]/page.tsx` with
   `generateStaticParams` → static generation.
 - Per-post `generateMetadata` for real `<title>`/description — the concrete SEO win.
-- Likes are a small client component (`'use client'` + `localStorage`). Teaching nuance:
-  interactivity still needs client JS even when content is server-rendered.
+- Likes are a small client component (`'use client'` + `localStorage`) that **keeps v2's
+  lifted-state design** — the per-post count and global total still share one source of truth and
+  cannot desync, so beat 2's payoff is preserved, not regressed. Teaching nuance: even with
+  server-rendered content, interactivity is still a client-side island — the article HTML arrives
+  finished from the server, but the like button is hydrated React running in the browser.
 - View-source shows the full article HTML. This is the beat the whole talk builds toward.
 
 ## Alternatives Considered
