@@ -50,7 +50,7 @@ test.describe('v1-basic', () => {
     await expect.poll(() => intOf(cardByTitle(page, posts[0].title).getByTestId('like-count'))).toBe(c0 + 1);
   });
 
-  test.skip('navigates to a post page and back', async ({ page }) => {
+  test('navigates to a post page and back', async ({ page }) => {
     const target = posts[0];
     await page.goto('/');
     await cardByTitle(page, target.title).getByTestId('read-link').click();
