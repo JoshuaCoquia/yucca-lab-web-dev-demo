@@ -53,7 +53,7 @@ consume this same content; only the *consumption mechanism* differs.
   itself the contrast with v2's empty root). Header shows a global like total. Controls: search
   input + sort dropdown.
 - `styles.css` styles the grid and cards.
-- `scripts.js` *enhances* existing DOM: search filters cards, sort reorders nodes, like buttons
+- `script.js` *enhances* existing DOM: search filters cards, sort reorders nodes, like buttons
   update a per-card count, the global total, and `localStorage`. The point: every update is wired by
   hand, and keeping the per-card counts and the global total in sync is manual.
 - Full posts are **separate static HTML pages** (`posts/<slug>.html`). Navigation is a full page
