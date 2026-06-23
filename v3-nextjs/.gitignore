@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...but commit the non-secret default DATABASE_URL so the demo runs on a fresh clone
+!.env
 
 # vercel
 .vercel
