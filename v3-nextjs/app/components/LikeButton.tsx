@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { likePost } from '@/lib/actions';
+import { Button } from '@/components/ui/button';
 
 interface LikeButtonProps {
   slug: string;
@@ -26,15 +27,16 @@ export default function LikeButton({ slug, initialCount }: LikeButtonProps) {
 
   return (
     <>
-      <button
+      <Button
         data-testid="like-button"
         onClick={handleLike}
         disabled={isPending}
-        className="text-sm border rounded px-3 py-1 hover:bg-zinc-50 disabled:opacity-50"
+        variant="outline"
+        size="sm"
       >
-        Like
-      </button>
-      <span data-testid="like-count" className="text-sm text-zinc-500">
+        ♥ Like
+      </Button>
+      <span data-testid="like-count" className="text-sm text-muted-foreground tabular-nums">
         {count}
       </span>
     </>
