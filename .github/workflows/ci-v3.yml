@@ -1,0 +1,45 @@
+name: ci-v3
+on:
+  pull_request:
+    paths:
+      - 'v3-nextjs/**'
+      - 'e2e/tests/v3.spec.ts'
+      - 'e2e/fixtures/**'
+      - 'e2e/playwright.config.ts'
+      - 'e2e/package.json'
+      - '.github/workflows/ci-v3.yml'
+concurrency:
+  group: ci-v3-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  # SQLite file DB for the demo; the build's schema may also hardcode this.
+  DATABASE_URL: file:./dev.db
+jobs:
+  e2e-v3:
+    name: e2e-v3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install v3 deps
+        run: pnpm -C v3-nextjs install
+      - name: Generate Prisma client (if schema present)
+        run: |
+          if [ -f v3-nextjs/prisma/schema.prisma ]; then
+            pnpm -C v3-nextjs exec prisma generate
+          else
+            echo "No Prisma schema yet — skipping generate."
+          fi
+      - name: Install e2e deps
+        run: pnpm -C e2e install
+      - name: Install Playwright browser
+        run: pnpm -C e2e exec playwright install --with-deps chromium
+      - name: Run v3 e2e (migrate + build + start)
+        env:
+          E2E_TARGET: v3
+        run: pnpm -C e2e exec playwright test

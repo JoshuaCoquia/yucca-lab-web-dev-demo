@@ -1,0 +1,33 @@
+name: ci-v1
+on:
+  pull_request:
+    paths:
+      - 'v1-basic/**'
+      - 'e2e/tests/v1.spec.ts'
+      - 'e2e/fixtures/**'
+      - 'e2e/playwright.config.ts'
+      - 'e2e/package.json'
+      - '.github/workflows/ci-v1.yml'
+concurrency:
+  group: ci-v1-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  e2e-v1:
+    name: e2e-v1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install e2e deps
+        run: pnpm -C e2e install
+      - name: Install Playwright browser
+        run: pnpm -C e2e exec playwright install --with-deps chromium
+      - name: Run v1 e2e (static server)
+        env:
+          E2E_TARGET: v1
+        run: pnpm -C e2e exec playwright test
