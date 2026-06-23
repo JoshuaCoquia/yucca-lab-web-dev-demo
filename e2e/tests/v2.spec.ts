@@ -60,7 +60,7 @@ test.describe('v2-react', () => {
     await expect(page.getByTestId('post-card').first()).toBeVisible();
   });
 
-  test.skip('index raw HTML has an empty root (client-rendered)', async ({ request }) => {
+  test('index raw HTML has an empty root (client-rendered)', async ({ request }) => {
     const html = await (await request.get('/')).text();
     for (const p of posts) {
       expect(norm(html)).not.toContain(norm(p.title));
